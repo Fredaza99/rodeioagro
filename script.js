@@ -261,6 +261,50 @@ if (window.location.pathname.includes('estoque.html')) {
 
   loadStockFromGitHub().then(loadFilteredStock);
 }
+// Carregar clientes e produtos na página de pesquisa de clientes
+if (window.location.pathname.includes('cliente.html')) {
+  const table = document.getElementById('clientHistoryTable').getElementsByTagName('tbody')[0];
+  const productFilterDropdown = document.getElementById('productFilter');
+
+  productFilterDropdown.innerHTML = '<option value="">Todos os Produtos</option>';
+
+  loadStockFromGitHub().then(() => {
+    stock.forEach(product => {
+      const option = document.createElement('option');
+      option.value = product.productName;
+      option.textContent = product.productName;
+      productFilterDropdown.appendChild(option);
+    });
+
+    loadClientsFromGitHub().then(loadFilteredClients); // Carregue os clientes e filtre após
+  });
+
+  function loadFilteredClients() {
+    const filter = document.getElementById('clientSearchInput').value.toLowerCase();
+    const selectedProduct = productFilterDropdown.value;
+    table.innerHTML = '';
+
+    const totalBalance = calculateTotalBalance();
+
+    clients.forEach((client) => {
+      const clientNameMatches = client.clientName.toLowerCase().includes(filter);
+      const productMatches = selectedProduct === "" || client.productName === selectedProduct;
+
+      if (clientNameMatches && productMatches) {
+        const key = client.clientName + '-' + client.productName;
+        const newRow = table.insertRow();
+        newRow.insertCell(0).textContent = client.clientName;
+        newRow.insertCell(1).textContent = client.productName;
+        newRow.insertCell(2).textContent = client.entryDate;
+        newRow.insertCell(3).textContent = client.exitDate;
+        newRow.insertCell(4).textContent = client.entryQuantity;
+        newRow.insertCell(5).textContent = client.exitQuantity;
+        newRow.insertCell(6).textContent = totalBalance[key];
+      }
+    });
+  }
+}
+
 
 
 
