@@ -96,7 +96,7 @@ if (window.location.pathname.includes('pedidos.html')) {
       deleteCell.appendChild(deleteButton);
     });
   }
-}
+
 
 
 
