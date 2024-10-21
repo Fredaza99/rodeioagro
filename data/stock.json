@@ -1,13 +1,14 @@
 [
-    {
-      "productName": "Produto A",
-      "productQuantity": 100,
-      "entryDate": "2024-10-21"
-    },
-    {
-      "productName": "Produto B",
-      "productQuantity": 200,
-      "entryDate": "2024-10-20"
-    }
-  ]
+  {
+    "productName": "Produto A",
+    "productQuantity": 50,
+    "entryDate": "2023-10-01"
+  },
+  {
+    "productName": "Produto B",
+    "productQuantity": 30,
+    "entryDate": "2023-10-02"
+  }
+]
+
   
