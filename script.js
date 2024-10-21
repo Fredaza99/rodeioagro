@@ -1,63 +1,38 @@
-// Declarar 'clients' e 'stock' como arrays vazios, a serem preenchidos pelos arquivos JSON
-let clients = [];
-let stock = [];
+// Inicializar clients e stock com dados do localStorage
+let clients = JSON.parse(localStorage.getItem('clients')) || [];
+let stock = JSON.parse(localStorage.getItem('stock')) || [];
 
-// URLs corretas dos arquivos JSON
+// URLs dos arquivos JSON
 const urlClients = 'https://fredaza99.github.io/rodeioagro/data/clients.json';
 const urlStock = 'https://fredaza99.github.io/rodeioagro/data/stock.json';
 
-// Exemplo de fetch para carregar clientes na index.html
-fetch(urlClients)
-  .then(response => response.json())
-  .then(data => {
-    console.log('Clientes:', data);
-    // Manipule os dados dos clientes aqui
-  })
-  .catch(error => console.error('Erro ao carregar clientes:', error));
-
-// Exemplo de fetch para carregar estoque na index.html
-fetch(urlStock)
-  .then(response => response.json())
-  .then(data => {
-    console.log('Estoque:', data);
-    // Manipule os dados de estoque aqui
-  })
-  .catch(error => console.error('Erro ao carregar estoque:', error));
-
-
-// Função para buscar clientes do arquivo JSON no GitHub
+// Função para carregar clientes do GitHub, se localStorage estiver vazio
 function loadClientsFromGitHub() {
-  return fetch(urlClients)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Erro ao carregar clientes');
-      }
-      return response.json();
-    })
-    .then(data => {
-      clients = data;
-      console.log('Clientes carregados:', clients);
-    })
-    .catch(error => console.error('Erro ao carregar clientes:', error));
+  if (clients.length === 0) {
+    return fetch(urlClients)
+      .then(response => response.json())
+      .then(data => {
+        clients = data;  // Sobrescreve apenas se localStorage estiver vazio
+        console.log('Clientes carregados do GitHub:', clients);
+      })
+      .catch(error => console.error('Erro ao carregar clientes do GitHub:', error));
+  }
 }
 
-// Função para buscar estoque do arquivo JSON no GitHub
+// Função para carregar estoque do GitHub, se localStorage estiver vazio
 function loadStockFromGitHub() {
-  return fetch(urlStock)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Erro ao carregar estoque');
-      }
-      return response.json();
-    })
-    .then(data => {
-      stock = data;
-      console.log('Estoque carregado:', stock);
-    })
-    .catch(error => console.error('Erro ao carregar estoque:', error));
+  if (stock.length === 0) {
+    return fetch(urlStock)
+      .then(response => response.json())
+      .then(data => {
+        stock = data;  // Sobrescreve apenas se localStorage estiver vazio
+        console.log('Estoque carregado do GitHub:', stock);
+      })
+      .catch(error => console.error('Erro ao carregar estoque do GitHub:', error));
+  }
 }
 
-// Adicionar cliente via formulário na página principal
+// Adicionar cliente via formulário
 if (window.location.pathname.includes('index.html')) {
   document.getElementById('clientForm').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -72,10 +47,7 @@ if (window.location.pathname.includes('index.html')) {
 
     const client = { clientName, productName, entryDate, entryQuantity, exitQuantity, saldo, exitDate };
     clients.push(client);
-
-    // Função para salvar dados de clientes no arquivo JSON (com back-end ou outras soluções)
-    // Por enquanto, é um exemplo de como você pode salvar os dados localmente
-    localStorage.setItem('clients', JSON.stringify(clients));
+    localStorage.setItem('clients', JSON.stringify(clients)); // Salvar no localStorage
 
     window.location.href = 'pedidos.html';
   });
@@ -86,31 +58,40 @@ if (window.location.pathname.includes('pedidos.html')) {
   const table = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
   table.innerHTML = '';
 
+  // Carregar clientes do localStorage ou do GitHub
   loadClientsFromGitHub().then(() => {
-    if (clients.length > 0) {
-      clients.forEach((client, index) => {
-        const newRow = table.insertRow();
-        newRow.insertCell(0).textContent = client.clientName;
-        newRow.insertCell(1).textContent = client.productName;
-        newRow.insertCell(2).textContent = client.entryDate;
-        newRow.insertCell(3).textContent = client.exitDate;
-        newRow.insertCell(4).textContent = client.entryQuantity;
-        newRow.insertCell(5).textContent = client.exitQuantity;
-        newRow.insertCell(6).textContent = client.saldo;
-
-        const deleteCell = newRow.insertCell(7);
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Excluir';
-        deleteButton.classList.add('delete-btn');
-        deleteButton.addEventListener('click', () => {
-          clients.splice(index, 1);
-          localStorage.setItem('clients', JSON.stringify(clients));
-          window.location.reload();
-        });
-        deleteCell.appendChild(deleteButton);
-      });
-    }
+    renderClientsToTable(table);
   });
+
+  function renderClientsToTable(table) {
+    clients.forEach((client, index) => {
+      const newRow = table.insertRow();
+      newRow.insertCell(0).textContent = client.clientName;
+      newRow.insertCell(1).textContent = client.productName;
+      newRow.insertCell(2).textContent = client.entryDate;
+      newRow.insertCell(3).textContent = client.exitDate;
+      newRow.insertCell(4).textContent = client.entryQuantity;
+      newRow.insertCell(5).textContent = client.exitQuantity;
+      newRow.insertCell(6).textContent = client.saldo;
+
+      const deleteCell = newRow.insertCell(7);
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Excluir';
+      deleteButton.classList.add('delete-btn');
+      deleteButton.addEventListener('click', () => {
+        clients.splice(index, 1);
+        localStorage.setItem('clients', JSON.stringify(clients));
+        window.location.reload();
+      });
+      deleteCell.appendChild(deleteButton);
+    });
+  }
+}
+
+// (Continuar com outras páginas e funcionalidades...)
+
+// Carregar estoque e clientes conforme necessário nas outras páginas
+
 
   document.getElementById('orderSearchInput').addEventListener('input', function () {
     const filter = this.value.toLowerCase();
