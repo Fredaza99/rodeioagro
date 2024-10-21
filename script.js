@@ -6,40 +6,44 @@ let stock = JSON.parse(localStorage.getItem('stock')) || [];
 const urlClients = 'https://fredaza99.github.io/rodeioagro/data/clients.json';
 const urlStock = 'https://fredaza99.github.io/rodeioagro/data/stock.json';
 
-// Função para carregar clientes do GitHub, se localStorage estiver vazio
+// Função para carregar clientes do GitHub
 function loadClientsFromGitHub() {
-  if (clients.length === 0) {
-    return fetch(urlClients)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erro ao carregar clientes do GitHub');
-        }
-        return response.json();
-      })
-      .then(data => {
-        clients = data; // Sobrescreve apenas se localStorage estiver vazio
+  return fetch(urlClients)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erro ao carregar clientes do GitHub');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Atualiza a lista de clientes apenas se localStorage estiver vazio
+      if (clients.length === 0) {
+        clients = data;
+        localStorage.setItem('clients', JSON.stringify(clients)); // Salvar no localStorage
         console.log('Clientes carregados do GitHub:', clients);
-      })
-      .catch(error => console.error('Erro ao carregar clientes do GitHub:', error));
-  }
+      }
+    })
+    .catch(error => console.error('Erro ao carregar clientes:', error));
 }
 
-// Função para carregar estoque do GitHub, se localStorage estiver vazio
+// Função para carregar estoque do GitHub
 function loadStockFromGitHub() {
-  if (stock.length === 0) {
-    return fetch(urlStock)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erro ao carregar estoque do GitHub');
-        }
-        return response.json();
-      })
-      .then(data => {
-        stock = data; // Sobrescreve apenas se localStorage estiver vazio
+  return fetch(urlStock)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erro ao carregar estoque do GitHub');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Atualiza a lista de produtos apenas se localStorage estiver vazio
+      if (stock.length === 0) {
+        stock = data;
+        localStorage.setItem('stock', JSON.stringify(stock)); // Salvar no localStorage
         console.log('Estoque carregado do GitHub:', stock);
-      })
-      .catch(error => console.error('Erro ao carregar estoque do GitHub:', error));
-  }
+      }
+    })
+    .catch(error => console.error('Erro ao carregar estoque:', error));
 }
 
 // Adicionar cliente via formulário
@@ -68,7 +72,6 @@ if (window.location.pathname.includes('pedidos.html')) {
   const table = document.getElementById('ordersTable').getElementsByTagName('tbody')[0];
   table.innerHTML = '';
 
-  // Carregar clientes do localStorage ou do GitHub
   loadClientsFromGitHub().then(() => {
     renderClientsToTable(table);
   });
@@ -96,13 +99,19 @@ if (window.location.pathname.includes('pedidos.html')) {
       deleteCell.appendChild(deleteButton);
     });
   }
+}
 
-
-
-
-// (Continuar com outras páginas e funcionalidades...)
+// (Continue com outras páginas e funcionalidades...)
 
 // Carregar estoque e clientes conforme necessário nas outras páginas
+if (window.location.pathname.includes('estoque.html')) {
+  // Adicionar código para o estoque aqui...
+}
+
+if (window.location.pathname.includes('cliente.html')) {
+  // Adicionar código para a página de cliente aqui...
+}
+
 
 
   document.getElementById('orderSearchInput').addEventListener('input', function () {
