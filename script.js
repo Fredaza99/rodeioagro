@@ -10,9 +10,14 @@ const urlStock = 'https://fredaza99.github.io/rodeioagro/data/stock.json';
 function loadClientsFromGitHub() {
   if (clients.length === 0) {
     return fetch(urlClients)
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro ao carregar clientes do GitHub');
+        }
+        return response.json();
+      })
       .then(data => {
-        clients = data;  // Sobrescreve apenas se localStorage estiver vazio
+        clients = data; // Sobrescreve apenas se localStorage estiver vazio
         console.log('Clientes carregados do GitHub:', clients);
       })
       .catch(error => console.error('Erro ao carregar clientes do GitHub:', error));
@@ -23,9 +28,14 @@ function loadClientsFromGitHub() {
 function loadStockFromGitHub() {
   if (stock.length === 0) {
     return fetch(urlStock)
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro ao carregar estoque do GitHub');
+        }
+        return response.json();
+      })
       .then(data => {
-        stock = data;  // Sobrescreve apenas se localStorage estiver vazio
+        stock = data; // Sobrescreve apenas se localStorage estiver vazio
         console.log('Estoque carregado do GitHub:', stock);
       })
       .catch(error => console.error('Erro ao carregar estoque do GitHub:', error));
@@ -87,6 +97,8 @@ if (window.location.pathname.includes('pedidos.html')) {
     });
   }
 }
+
+
 
 // (Continuar com outras páginas e funcionalidades...)
 
