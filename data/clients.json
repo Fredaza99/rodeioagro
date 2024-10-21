@@ -1,12 +1,20 @@
 [
     {
-      "clientName": "João",
-      "productName": "Produto A",
-      "entryDate": "2024-10-21",
-      "entryQuantity": 100,
-      "exitQuantity": 50,
-      "saldo":
-
+        "clientName": "Cliente 1",
+        "productName": "Produto A",
+        "entryDate": "2024-10-01",
+        "entryQuantity": 10,
+        "exitQuantity": 5,
+        "exitDate": "2024-10-10"
+    },
+    {
+        "clientName": "Cliente 2",
+        "productName": "Produto B",
+        "entryDate": "2024-10-05",
+        "entryQuantity": 15,
+        "exitQuantity": 0,
+        "exitDate": "Não definido"
     }
-  ]
+]
+
   
