@@ -1,4 +1,4 @@
-// Inicializar clients e stock com dados do localStorage
+// Inicializar 'clients' e 'stock' com dados do localStorage
 let clients = JSON.parse(localStorage.getItem('clients')) || [];
 let stock = JSON.parse(localStorage.getItem('stock')) || [];
 
@@ -16,10 +16,9 @@ function loadClientsFromGitHub() {
       return response.json();
     })
     .then(data => {
-      // Atualiza a lista de clientes apenas se localStorage estiver vazio
       if (clients.length === 0) {
         clients = data;
-        localStorage.setItem('clients', JSON.stringify(clients)); // Salvar no localStorage
+        localStorage.setItem('clients', JSON.stringify(clients));
         console.log('Clientes carregados do GitHub:', clients);
       }
     })
@@ -36,21 +35,19 @@ function loadStockFromGitHub() {
       return response.json();
     })
     .then(data => {
-      // Atualiza a lista de produtos apenas se localStorage estiver vazio
       if (stock.length === 0) {
         stock = data;
-        localStorage.setItem('stock', JSON.stringify(stock)); // Salvar no localStorage
+        localStorage.setItem('stock', JSON.stringify(stock));
         console.log('Estoque carregado do GitHub:', stock);
       }
     })
     .catch(error => console.error('Erro ao carregar estoque:', error));
 }
 
-// Adicionar cliente via formulário
+// Adicionar cliente via formulário na página principal
 if (window.location.pathname.includes('index.html')) {
   document.getElementById('clientForm').addEventListener('submit', function (e) {
     e.preventDefault();
-
     const clientName = document.getElementById('clientName').value;
     const productName = document.getElementById('productName').value;
     const entryDate = document.getElementById('entryDate').value;
@@ -61,8 +58,7 @@ if (window.location.pathname.includes('index.html')) {
 
     const client = { clientName, productName, entryDate, entryQuantity, exitQuantity, saldo, exitDate };
     clients.push(client);
-    localStorage.setItem('clients', JSON.stringify(clients)); // Salvar no localStorage
-
+    localStorage.setItem('clients', JSON.stringify(clients));
     window.location.href = 'pedidos.html';
   });
 }
@@ -99,20 +95,6 @@ if (window.location.pathname.includes('pedidos.html')) {
       deleteCell.appendChild(deleteButton);
     });
   }
-}
-
-// (Continue com outras páginas e funcionalidades...)
-
-// Carregar estoque e clientes conforme necessário nas outras páginas
-if (window.location.pathname.includes('estoque.html')) {
-  // Adicionar código para o estoque aqui...
-}
-
-if (window.location.pathname.includes('cliente.html')) {
-  // Adicionar código para a página de cliente aqui...
-}
-
-
 
   document.getElementById('orderSearchInput').addEventListener('input', function () {
     const filter = this.value.toLowerCase();
@@ -248,9 +230,12 @@ if (window.location.pathname.includes('estoque.html')) {
           deleteButton.textContent = 'Excluir';
           deleteButton.classList.add('delete-btn');
           deleteButton.addEventListener('click', () => {
-            stock.splice(stock.indexOf(entry), 1);
-            localStorage.setItem('stock', JSON.stringify(stock));
-            window.location.reload();
+            const index = stock.indexOf(entry);
+            if (index > -1) {
+              stock.splice(index, 1);
+              localStorage.setItem('stock', JSON.stringify(stock));
+              window.location.reload();
+            }
           });
           deleteCell.appendChild(deleteButton);
         });
@@ -260,52 +245,9 @@ if (window.location.pathname.includes('estoque.html')) {
 
   document.getElementById('stockSearchInput').addEventListener('input', loadFilteredStock);
   document.getElementById('stockFilter').addEventListener('change', loadFilteredStock);
-
   loadStockFromGitHub().then(loadFilteredStock);
 }
-// Carregar clientes e produtos na página de pesquisa de clientes
-if (window.location.pathname.includes('cliente.html')) {
-  const table = document.getElementById('clientHistoryTable').getElementsByTagName('tbody')[0];
-  const productFilterDropdown = document.getElementById('productFilter');
 
-  productFilterDropdown.innerHTML = '<option value="">Todos os Produtos</option>';
-
-  loadStockFromGitHub().then(() => {
-    stock.forEach(product => {
-      const option = document.createElement('option');
-      option.value = product.productName;
-      option.textContent = product.productName;
-      productFilterDropdown.appendChild(option);
-    });
-
-    loadClientsFromGitHub().then(loadFilteredClients); // Carregue os clientes e filtre após
-  });
-
-  function loadFilteredClients() {
-    const filter = document.getElementById('clientSearchInput').value.toLowerCase();
-    const selectedProduct = productFilterDropdown.value;
-    table.innerHTML = '';
-
-    const totalBalance = calculateTotalBalance();
-
-    clients.forEach((client) => {
-      const clientNameMatches = client.clientName.toLowerCase().includes(filter);
-      const productMatches = selectedProduct === "" || client.productName === selectedProduct;
-
-      if (clientNameMatches && productMatches) {
-        const key = client.clientName + '-' + client.productName;
-        const newRow = table.insertRow();
-        newRow.insertCell(0).textContent = client.clientName;
-        newRow.insertCell(1).textContent = client.productName;
-        newRow.insertCell(2).textContent = client.entryDate;
-        newRow.insertCell(3).textContent = client.exitDate;
-        newRow.insertCell(4).textContent = client.entryQuantity;
-        newRow.insertCell(5).textContent = client.exitQuantity;
-        newRow.insertCell(6).textContent = totalBalance[key];
-      }
-    });
-  }
-}
 
 
 
