@@ -1,0 +1,192 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background: #757F9A;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #D7DDE8, #757F9A);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #D7DDE8, #757F9A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+     margin: 0;
+    padding: 0;
+  }
+  
+  h1, h2 {
+    color: #333;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  nav {
+    background-color: #757F9A;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    height: 50px;
+  }
+  
+  .navbar {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .navbar li {
+    display: inline;
+  }
+  
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+  }
+  
+  .navbar a:hover {
+    color: #18bc9c;
+  }
+  
+  .material-icons {
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  
+  /* Form Styles */
+  form {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  form label {
+    display: block;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  form input[type="text"], form input[type="date"], form input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  form button {
+    padding: 10px 20px;
+    background-color: #18bc9c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  form button:hover {
+    background-color: #16a085;
+  }
+  
+  /* Table Styles */
+  table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #fff;
+  }
+  
+  table th, table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  table th {
+    background-color: #2c3e50;
+    color: white;
+  }
+  
+  .delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .delete-btn:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Barra de Pesquisa */
+  #orderSearchInput {
+    width: 40%;
+    padding: 10px;
+    margin: 20px auto;
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  #orderSearchInput:focus {
+    border-color: #18bc9c;
+    outline: none;
+    box-shadow: 0 0 8px rgba(24, 188, 156, 0.5);
+  }
+  
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 0px;
+    background-color: black
+    color: white;
+    position:static;
+    width: 100%;
+    bottom: 0;
+    font-size: 12px;
+  }
+
+  /* Estilo para a barra de pesquisa de clientes */
+#clientSearchInput {
+  width: 50%; /* Aumentar o tamanho para ser mais visível */
+  padding: 10px;
+  margin: 20px auto; /* Centralizar o campo */
+  display: block; /* Definir como block para aplicar margens corretamente */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#clientSearchInput:focus {
+  border-color: #18bc9c;
+  outline: none;
+  box-shadow: 0 0 8px rgba(24, 188, 156, 0.5);
+}
+
+/* Estilo para o dropdown de produtos */
+#productFilter {
+  width: 50%; /* Mesma largura da barra de pesquisa */
+  padding: 10px;
+  margin: 20px auto; /* Centralizar o dropdown */
+  display: block; /* Para que o dropdown fique na mesma linha que a barra */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: white; /* Fundo branco para destacar o dropdown */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#productFilter:focus {
+  border-color: #18bc9c;
+  outline: none;
+  box-shadow: 0 0 8px rgba(24, 188, 156, 0.5);
+}
+
+  
